@@ -1,0 +1,9 @@
+
+./in/cpi40                    cpi
+./in/ahb_slave/ahb_slave_w64    ahb
+
+cpi out cpi_out.write_address    ahb in  haddr 
+cpi out cpi_out.write_data       ahb in  hwdata
+
+cpi out cpi_out.read_address     ahb in  haddr 
+cpi in  cpi_in.read_resp_data    ahb out hrdata 

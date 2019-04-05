@@ -1,0 +1,115 @@
+protocol cipi
+
+  ports
+    packet out 120 cipi
+  endports
+
+  packet flit_header begin
+    control 4 CR   
+    control 8 ECC  
+  end
+
+  packet packet_header begin
+    control 3 VC
+    control 4 LEN
+    control 10 DCID
+    control 8 CMD
+    control 8 TID
+  end
+
+  packet request_header begin
+    control 10 SCID 
+    control 8 AXU  
+    control 1 AXL  
+    control 4 AXR  
+    control 3 AXP  
+  end
+
+  packet response_header begin
+    control 5 AXS 
+    control 2 AXE 
+  end
+  
+  packet cipi begin
+    subpacket flit_header flit_header0
+    control 4 RSV
+    subpacket packet_header packet_header0 
+
+    begin
+    | + @(packet_header.CMD(4)) #Write8
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 cipi.write_address(offset = 8)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header1
+      control 4 RSV
+      control 8 write_mask
+      control 32 reserved
+      data 64 cipi.write_data(range = 64)
+
+    | + @(packet_header.CMD(5)) #Write16
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 cipi.write_address(offset = 16)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header1
+      control 4 RSV
+      control 8 write_mask
+      control 32 reserved
+      data 64 cipi.write_data(range = 64)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header2
+      control 4 RSV
+      control 8 write_mask
+      control 32 reserved
+      data 64 cipi.write_data(range = 64)
+
+    | + @(packet_header.CMD(6)) #Write64
+      ## flit 0 ## 
+      subpacket request_header request_header0
+      data 45 cipi.write_address(offset = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header1
+      control 4 RSV
+      control 8 write_mask
+      control 32 reserved
+      data 64 cipi.write_data(range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header2
+      control 12 write_mask 
+      data 96 cipi.write_data(range = 96)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header3
+      control 12 write_mask 
+      data 96 cipi.write_data(range = 96)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header4
+      control 12 write_mask 
+      data 96 cipi.write_data(range = 96)
+
+      ## flit 5 ##
+      subpacket flit_header flit_header5
+      control 12 write_mask 
+      data 96 cipi.write_data(range = 96)
+
+      ## flit 6 ##
+      subpacket flit_header flit_header1
+      control 4 RSV
+      control 8 write_mask
+      control 32 reserved
+      data 64 cipi.write_data(range = 64)
+
+    end
+
+  end
+
+endprotocol
+
+

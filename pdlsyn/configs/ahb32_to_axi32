@@ -1,0 +1,9 @@
+
+./in/ahb_master/ahb_master_w32  ahb
+./in/axi_slave/axi_slave_w32    axi
+
+ahb out haddr    axi in  awaddr    
+ahb out hwdata   axi in  wdata  
+
+ahb out haddr    axi in  araddr 
+ahb in  hrdata   axi out rdata   

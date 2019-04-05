@@ -1,0 +1,48 @@
+protocol wishbone
+
+	#ERR_I, RTY_I: Optional
+	#Tag signals: name, tag type, operation
+	#port size & granularity, max operand size: 8, 16, 32, 64
+	#CLK_I? (-> rising edge), RST_I? (->only resets the interface)
+	#active high!
+
+	ports
+		control	in	1	ack			#termination of a bus cycle	
+		control	out	1	cyc			#valid bus cycle is in progress
+		control	out	1	stb			#strobe output, qualify other signals
+		control	out	1	we			#write enable_out
+		#control	in	1	stall	#slave not able to accept transfer (pipeline mode)
+		#control	in	1	err		#abnormal cycle termination
+		#control	in	1	rty		#not ready, should be retried
+		#control	out	n	sel		#select output array, indicates where valid data is
+		#control	out	3	cti		#cycle type identifier i/o, TODO
+		#control	out	2	bte		#burst type extension i/o, TODO
+	
+		data	out	32	addr
+		data	out	32	data_m	
+		data	in	32	data_s
+	
+		#data	out	n	tga		#address tag
+		#data	out	n	tgc		#cycle tag
+		#data	out	n	tgd_m	#data tag
+		#data	in	n	tgd_s	#data tag
+	endports
+	
+	
+	behavior
+		begin
+		
+		# Single read
+		|	+@(we(0), stb(1), cyc(1)) { send (addr(offset=4)) }
+			+@(ack(1))
+			+@(stb(0),cyc(0)) { rec (data_s(range=32)) }
+	
+		# Single write
+		|	+@(we(1), stb(1), cyc(1)) { send (addr(offset=4), data_m(range=32)) }
+			+@(ack(1))
+			+@(stb(0), cyc(0))
+		end
+	
+	endbehavior
+
+endprotocol

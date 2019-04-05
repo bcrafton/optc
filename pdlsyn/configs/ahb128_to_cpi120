@@ -1,0 +1,9 @@
+
+./in/ahb_master/ahb_master_w128  ahb
+./in/cpi120                  cpi
+
+ahb out haddr    cpi in  cpi_in.write_address    
+ahb out hwdata   cpi in  cpi_in.write_data       
+
+ahb out haddr    cpi in  cpi_in.read_address     
+ahb in  hrdata   cpi out cpi_out.read_resp_data    

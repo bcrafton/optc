@@ -1,0 +1,21 @@
+protocol spi8x8
+
+  ports 
+    data    out 1 mosi
+    data    in  1 miso
+    control out 1 ss
+  endports 
+
+  behavior
+    begin
+    | generate itr = 7 : 0 begin
+      + @(ss(0)) { send(mosi) }
+      end
+
+    | generate itr = 7 : 0 begin
+      + @(ss(0)) { rec(miso) }
+      end
+    end
+  endbehavior
+
+endprotocol

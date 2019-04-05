@@ -1,0 +1,60 @@
+protocol wishbone
+
+	#ERR_I, RTY_I: Optional
+	#Tag signals: name, tag type, operation
+	#port size & granularity, max operand size: 8, 16, 32, 64
+	#CLK_I? (-> rising edge), RST_I? (->only resets the interface)
+	#active high!
+
+	ports
+		control	out	1	ack			# termination of a bus cycle	
+		control	in	1	cyc			# valid bus cycle is in progress
+		control	in	1	stb			# strobe output, qualify other signals
+	 	control	in	1	we			# write enable_in
+		control	in	2	bte			# burst type extension (only for cti(2))
+									# 0 : Linear burst
+									# 1 : 4-beat wrap burst
+									# 2 : 8-beat wrap burst
+									# 3 : 16-beat wrap burst
+		control	in	3	cti			# cycle type identifier
+									# 0 : Classic cycle (Default) 
+									# 1 : Constant address burst cycle
+									# 2 : Incrementing burst cycle
+									# 7 : End-of-Burst
+		
+		#control	out	1	stall	#slave not able to accept transfer (pipeline mode)
+		#control	out	1	err		#abnormal cycle termination
+		#control	out	1	rty		#not ready, should be retried
+		#control	in	1	lock	#request complete ownership of the bus (uninterruptible)
+		#control	in	n	sel		#select output array, indicates where valid data is
+	
+		data	in	32	addr
+		data	in	32	data_m
+		data	out	32	data_s
+	
+		#data	in	n	tga			#address tag
+		#data	in	n	tgc			#cycle tag
+		#data	in	n	tgd_m		#data tag
+		#data	out	n	tgd_s		#data tag
+	endports
+
+	behavior
+		begin
+	
+		# Single read (End-of-Burst)
+		|	+@(we(0), cti(7), stb(1), ack(1)) { rec (addr (offset=4)) send (data_s (range=32)) }
+			+@(stb(0), ack(0))
+	
+		# Single write (End-of-Burst)
+		|	+@(we(1), cti(7), stb(1), ack(1)) { rec (addr (offset=4)) }
+			+@(stb(0), ack(0)) { rec (data_m (range=32)) }
+		
+		# TODO
+		# Classic cycle: Read
+		|	+@(we(0), cti(0), stb(1), ack(1)) { rec (addr (offset=4)) send (data_s (range=32)) }
+			+@(ack(0))	
+		end
+	
+	endbehavior
+
+endprotocol

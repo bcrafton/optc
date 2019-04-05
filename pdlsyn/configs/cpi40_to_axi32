@@ -1,0 +1,9 @@
+
+./in/cpi40                    cpi
+./in/axi_slave/axi_slave_w32    axi
+
+cpi out cpi_out.write_address    axi in  awaddr 
+cpi out cpi_out.write_data       axi in  wdata
+
+cpi out cpi_out.read_address     axi in  araddr 
+cpi in cpi_out.read_resp_data    axi out rdata 

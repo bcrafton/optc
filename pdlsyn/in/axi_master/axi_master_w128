@@ -1,0 +1,76 @@
+protocol axi128
+
+  ports 
+    # read addr
+    data    out 32 araddr
+    control out 8  arlen
+    control out 3  arsize
+    control out 3  arburst
+    control out 1  arvalid
+    control in 1 arready
+
+    # read data
+    data    in 128 rdata
+    control in 2  rresp
+    control in 1  rlast
+    control in 1  rvalid
+    control out  1  rready
+
+    # write addr
+    data    out 32 awaddr
+    control out 8  awlen
+    control out 3  awsize
+    control out 2  awburst
+    control out 1  awvalid
+    control in  1  awready
+
+    # write data
+    data    out  128 wdata
+    control out 1  wlast
+    control out 1  wvalid
+    control in  1  wready
+
+    # write resp
+    control in 2  bresp 
+    control in 1  bvalid
+    control out  1  bready
+  endports 
+
+  behavior
+    generate itr = awlen : 0 begin
+    + @(awvalid(1), awready(1)) { send( awaddr(offset=16, id=itr) ) }
+    end
+  endbehavior
+
+  behavior
+    generate itr = awlen : 0 begin
+    + @(wvalid(1), wready(1)) { send( wdata(range=128, id=itr, dep=awaddr(itr)) ) }
+    end
+  endbehavior
+
+  behavior
+    generate itr = arlen : 0 begin
+    + @(arvalid(1), arready(1)) { send( araddr(offset=16, id=itr) ) }
+    end
+  endbehavior
+
+  behavior
+    generate itr = arlen : 0 begin
+    + @(rvalid(1), rready(1)) { rec( rdata(range=128, id=itr, dep=araddr(itr)) ) }
+    end 
+  endbehavior
+
+endprotocol
+
+
+
+
+
+
+
+
+
+
+
+
+

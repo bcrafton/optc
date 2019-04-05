@@ -1,0 +1,569 @@
+protocol cpi40
+
+  ports
+    packet out 40 cpi_out cpi_out
+    packet in 40 cpi_in cpi_in
+  endports
+
+  packet packet_header begin
+    control 6 LEN
+    control 8 CMD
+    control 8 TID
+    control 8 DID
+    control 3 SID
+    control 1 S
+    control 1 C
+    control 5 ECC
+  end
+
+  packet rd_rsp_packet (i, d) begin
+    data 32 read_resp_data(range=32, id=i, dep=d)
+    control 3 CD
+    control 5 ECC
+  end
+
+  packet wr_req_packet (i, d) begin
+    data 32 write_data(range=32)
+    control 3 CD
+    control 5 ECC
+  end
+  
+  packet cpi_in begin
+    subpacket packet_header packet_header0 
+
+    begin
+
+    ### READ REQUEST ### 
+
+    | + @(packet_header0.CMD(16)) : ReadRequest8
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 8, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(17)) : ReadRequest16
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 16, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(18)) : ReadRequest24
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 24, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(19)) : ReadRequest32
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 32, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(20)) : ReadRequest40
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 40, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(21)) : ReadRequest48
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 48, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(22)) : ReadRequest56
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 56, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(23)) : ReadRequest64
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 64, id=0)
+        control 3 ECC
+
+    ### READ RESPONSE ### 
+
+    | + @(packet_header0.CMD(128)) : ReadResponse8
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_out.ReadRequest8.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=0, d=cpi_out.ReadRequest8.read_address(0))
+
+    | + @(packet_header0.CMD(129)) : ReadResponse16
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_out.ReadRequest16.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_out.ReadRequest16.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_out.ReadRequest16.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_out.ReadRequest16.read_address(0)) 
+
+    | + @(packet_header0.CMD(130)) : ReadResponse24
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_out.ReadRequest24.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_out.ReadRequest24.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_out.ReadRequest24.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_out.ReadRequest24.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_out.ReadRequest24.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_out.ReadRequest24.read_address(0))
+
+    | + @(packet_header0.CMD(131)) : ReadResponse32
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_out.ReadRequest32.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_out.ReadRequest32.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_out.ReadRequest32.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_out.ReadRequest32.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_out.ReadRequest32.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_out.ReadRequest32.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_out.ReadRequest32.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_out.ReadRequest32.read_address(0))
+
+    | + @(packet_header0.CMD(132)) : ReadResponse40
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_out.ReadRequest40.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_out.ReadRequest40.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_out.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_out.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_out.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_out.ReadRequest40.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_out.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_out.ReadRequest40.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet8(i=8, d=cpi_out.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet9(i=9, d=cpi_out.ReadRequest40.read_address(0))
+
+    | + @(packet_header0.CMD(133)) : ReadResponse48
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_out.ReadRequest48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_out.ReadRequest48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_out.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_out.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_out.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_out.ReadResponse48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_out.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_out.ReadRequest48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet8(i=8, d=cpi_out.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet9(i=9, d=cpi_out.ReadRequest48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet10(i=10, d=cpi_out.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet11(i=11, d=cpi_out.ReadRequest48.read_address(0))
+
+    | + @(packet_header0.CMD(134)) : ReadResponse56
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_out.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_out.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_out.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_out.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_out.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_out.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_out.ReadResponse56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_out.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet8(i=8, d=cpi_out.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet9(i=9, d=cpi_out.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet10(i=10, d=cpi_out.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet11(i=11, d=cpi_out.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet12(i=12, d=cpi_out.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet13(i=13, d=cpi_out.ReadRequest56.read_address(0))
+
+    | + @(packet_header0.CMD(135)) : ReadResponse64
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_out.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_out.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_out.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_out.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_out.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_out.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_out.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_out.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet8(i=8, d=cpi_out.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet9(i=9, d=cpi_out.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet10(i=10, d=cpi_out.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet11(i=11, d=cpi_out.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet12(i=12, d=cpi_out.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet13(i=13, d=cpi_out.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet14(i=14, d=cpi_out.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet15(i=15, d=cpi_out.ReadRequest64.read_address(0))
+
+    ### WRITE REQUEST ### 
+
+    | + @(packet_header0.CMD(0)) : WriteRequest8
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 8)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+
+    | + @(packet_header0.CMD(1)) : WriteRequest16
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 16)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+
+    | + @(packet_header0.CMD(2)) : WriteRequest24
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 24)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+
+    | + @(packet_header0.CMD(3)) : WriteRequest32
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 32)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+
+    | + @(packet_header0.CMD(4)) : WriteRequest40
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 40)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+        subpacket wr_req_packet wr_req_packet8
+        subpacket wr_req_packet wr_req_packet9
+
+    | + @(packet_header0.CMD(5)) : WriteRequest48
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 48)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+        subpacket wr_req_packet wr_req_packet8
+        subpacket wr_req_packet wr_req_packet9
+        subpacket wr_req_packet wr_req_packet10
+        subpacket wr_req_packet wr_req_packet11
+
+    | + @(packet_header0.CMD(6)) : WriteRequest56
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 56)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+        subpacket wr_req_packet wr_req_packet8
+        subpacket wr_req_packet wr_req_packet9
+        subpacket wr_req_packet wr_req_packet10
+        subpacket wr_req_packet wr_req_packet11
+        subpacket wr_req_packet wr_req_packet12
+        subpacket wr_req_packet wr_req_packet13
+
+    | + @(packet_header0.CMD(7)) : WriteRequest64
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 64)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+        subpacket wr_req_packet wr_req_packet8
+        subpacket wr_req_packet wr_req_packet9
+        subpacket wr_req_packet wr_req_packet10
+        subpacket wr_req_packet wr_req_packet11
+        subpacket wr_req_packet wr_req_packet12
+        subpacket wr_req_packet wr_req_packet13
+        subpacket wr_req_packet wr_req_packet14
+        subpacket wr_req_packet wr_req_packet15
+    end
+  end
+
+  packet cpi_out begin
+    subpacket packet_header packet_header0 
+
+    begin
+
+    ### READ REQUEST ### 
+
+    | + @(packet_header0.CMD(16)) : ReadRequest8
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 8, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(17)) : ReadRequest16
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 16, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(18)) : ReadRequest24
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 24, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(19)) : ReadRequest32
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 32, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(20)) : ReadRequest40
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 40, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(21)) : ReadRequest48
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 48, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(22)) : ReadRequest56
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 56, id=0)
+        control 3 ECC
+
+    | + @(packet_header0.CMD(23)) : ReadRequest64
+        control 4 SID
+        control 1 H
+        data 32 read_address(offset = 64, id=0)
+        control 3 ECC
+
+    ### READ RESPONSE ### 
+
+    | + @(packet_header0.CMD(128)) : ReadResponse8
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_in.ReadRequest8.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_in.ReadRequest8.read_address(0))
+
+    | + @(packet_header0.CMD(129)) : ReadResponse16
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_in.ReadRequest16.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_in.ReadRequest16.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_in.ReadRequest16.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_in.ReadRequest16.read_address(0)) 
+
+    | + @(packet_header0.CMD(130)) : ReadResponse24
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_in.ReadRequest24.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_in.ReadRequest24.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_in.ReadRequest24.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_in.ReadRequest24.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_in.ReadRequest24.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_in.ReadRequest24.read_address(0))
+
+    | + @(packet_header0.CMD(131)) : ReadResponse32
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_in.ReadRequest32.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_in.ReadRequest32.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_in.ReadRequest32.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_in.ReadRequest32.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_in.ReadRequest32.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_in.ReadRequest32.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_in.ReadRequest32.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_in.ReadRequest32.read_address(0))
+
+    | + @(packet_header0.CMD(132)) : ReadResponse40
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_in.ReadRequest40.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_in.ReadRequest40.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_in.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_in.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_in.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_in.ReadRequest40.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_in.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_in.ReadRequest40.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet8(i=8, d=cpi_in.ReadRequest40.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet9(i=9, d=cpi_in.ReadRequest40.read_address(0))
+
+    | + @(packet_header0.CMD(133)) : ReadResponse48
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_in.ReadRequest48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_in.ReadRequest48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_in.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_in.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_in.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_in.ReadRequest48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_in.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_in.ReadRequest48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet8(i=8, d=cpi_in.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet9(i=9, d=cpi_in.ReadRequest48.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet10(i=10, d=cpi_in.ReadRequest48.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet11(i=11, d=cpi_in.ReadRequest48.read_address(0))
+
+    | + @(packet_header0.CMD(134)) : ReadResponse56
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_in.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_in.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_in.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_in.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_in.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_in.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_in.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_in.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet8(i=8, d=cpi_in.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet9(i=9, d=cpi_in.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet10(i=10, d=cpi_in.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet11(i=11, d=cpi_in.ReadRequest56.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet12(i=12, d=cpi_in.ReadRequest56.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet13(i=13, d=cpi_in.ReadRequest56.read_address(0))
+
+    | + @(packet_header0.CMD(135)) : ReadResponse64
+        subpacket rd_rsp_packet rd_rsp_packet0(i=0, d=cpi_in.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet1(i=1, d=cpi_in.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet2(i=2, d=cpi_in.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet3(i=3, d=cpi_in.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet4(i=4, d=cpi_in.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet5(i=5, d=cpi_in.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet6(i=6, d=cpi_in.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet7(i=7, d=cpi_in.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet8(i=8, d=cpi_in.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet9(i=9, d=cpi_in.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet10(i=10, d=cpi_in.ReadRequest64.read_address(0)) 
+        subpacket rd_rsp_packet rd_rsp_packet11(i=11, d=cpi_in.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet12(i=12, d=cpi_in.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet13(i=13, d=cpi_in.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet14(i=14, d=cpi_in.ReadRequest64.read_address(0))
+        subpacket rd_rsp_packet rd_rsp_packet15(i=15, d=cpi_in.ReadRequest64.read_address(0))
+
+    ### WRITE REQUEST ### 
+
+    | + @(packet_header0.CMD(0)) : WriteRequest8
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 8)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+
+    | + @(packet_header0.CMD(1)) : WriteRequest16
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 16)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+
+    | + @(packet_header0.CMD(2)) : WriteRequest24
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 24)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+
+    | + @(packet_header0.CMD(3)) : WriteRequest32
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 32)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+
+    | + @(packet_header0.CMD(4)) : WriteRequest40
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 40)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+        subpacket wr_req_packet wr_req_packet8
+        subpacket wr_req_packet wr_req_packet9
+
+    | + @(packet_header0.CMD(5)) : WriteRequest48
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 48)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+        subpacket wr_req_packet wr_req_packet8
+        subpacket wr_req_packet wr_req_packet9
+        subpacket wr_req_packet wr_req_packet10
+        subpacket wr_req_packet wr_req_packet11
+
+    | + @(packet_header0.CMD(6)) : WriteRequest56
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 56)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+        subpacket wr_req_packet wr_req_packet8
+        subpacket wr_req_packet wr_req_packet9
+        subpacket wr_req_packet wr_req_packet10
+        subpacket wr_req_packet wr_req_packet11
+        subpacket wr_req_packet wr_req_packet12
+        subpacket wr_req_packet wr_req_packet13
+
+    | + @(packet_header0.CMD(7)) : WriteRequest64
+        control 4 SID
+        control 1 H
+        data 32 write_address(offset = 64)
+        control 3 ECC
+        subpacket wr_req_packet wr_req_packet0
+        subpacket wr_req_packet wr_req_packet1
+        subpacket wr_req_packet wr_req_packet2
+        subpacket wr_req_packet wr_req_packet3
+        subpacket wr_req_packet wr_req_packet4
+        subpacket wr_req_packet wr_req_packet5
+        subpacket wr_req_packet wr_req_packet6
+        subpacket wr_req_packet wr_req_packet7
+        subpacket wr_req_packet wr_req_packet8
+        subpacket wr_req_packet wr_req_packet9
+        subpacket wr_req_packet wr_req_packet10
+        subpacket wr_req_packet wr_req_packet11
+        subpacket wr_req_packet wr_req_packet12
+        subpacket wr_req_packet wr_req_packet13
+        subpacket wr_req_packet wr_req_packet14
+        subpacket wr_req_packet wr_req_packet15
+    end
+  end
+
+endprotocol

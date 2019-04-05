@@ -1,0 +1,869 @@
+protocol cpi120
+
+  ports
+    packet out 120 cpi_out cpi_out
+    packet in  120 cpi_in  cpi_in
+  endports
+
+  packet flit_header begin
+    control 4 CR   
+    control 8 ECC  
+  end
+
+  packet packet_header begin
+    control 3 VC
+    control 4 LEN
+    control 10 DCID
+    control 8 CMD
+    control 8 TID
+  end
+
+  packet request_header begin
+    control 10 SCID 
+    control 8 AXU  
+    control 1 AXL  
+    control 4 AXR  
+    control 3 AXP  
+  end
+
+  packet response_header begin
+    control 5 AXS 
+    control 2 AXE 
+  end
+  
+  packet cpi_in begin
+    subpacket flit_header flit_header0
+    control 4 RSV 
+    subpacket packet_header packet_header0 
+
+    begin
+
+    ### READ REQUEST ### 
+
+    | + @(packet_header0.CMD(0)) : ReadRequest8
+      subpacket request_header request_header8
+      data 45 read_address(id=0, offset = 8)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest16
+      subpacket request_header request_header16
+      data 45 read_address(id=0, offset = 16)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest24
+      subpacket request_header request_header24
+      data 45 read_address(id=0, offset = 24)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest32
+      subpacket request_header request_header32
+      data 45 read_address(id=0, offset = 32)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest40
+      subpacket request_header request_header40
+      data 45 read_address(id=0, offset = 40)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest48
+      subpacket request_header request_header48
+      data 45 read_address(id=0, offset = 48)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest56
+      subpacket request_header request_header56
+      data 45 read_address(id=0, offset = 56)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest64
+      subpacket request_header request_header64
+      data 45 read_address(id=0, offset = 64)
+
+    ### READ RESPONSE ###
+
+    | + @(packet_header0.CMD(1)) : ReadResponse8
+      subpacket response_header response_header8
+      data 64 read_resp_data(dep=cpi_out.ReadRequest8.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse16
+      subpacket response_header response_header16
+      data 64 read_resp_data(dep=cpi_out.ReadRequest16.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp16
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_out.ReadRequest16.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse24
+      subpacket response_header response_header24
+      data 64 read_resp_data(dep=cpi_out.ReadRequest24.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp24_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_out.ReadRequest24.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp24_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_out.ReadRequest24.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse32
+      subpacket response_header response_header32
+      data 64 read_resp_data(dep=cpi_out.ReadRequest32.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp32_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_out.ReadRequest32.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp32_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_out.ReadRequest32.read_address(0), range = 64)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp32_3
+      control 44 reserved_3
+      data 64 read_resp_data(dep=cpi_out.ReadRequest32.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse40
+      subpacket response_header response_header40
+      data 64 read_resp_data(dep=cpi_out.ReadRequest40.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp40_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_out.ReadRequest40.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp40_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_out.ReadRequest40.read_address(0), range = 64)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp40_3
+      control 44 reserved_3
+      data 64 read_resp_data(dep=cpi_out.ReadRequest40.read_address(0), range = 64)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_rsp40_4
+      control 44 reserved_4
+      data 64 read_resp_data(dep=cpi_out.ReadRequest40.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse48
+      subpacket response_header response_header48
+      data 64 read_resp_data(dep=cpi_out.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp48_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_out.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp48_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_out.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp48_3
+      control 44 reserved_3
+      data 64 read_resp_data(dep=cpi_out.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_rsp48_4
+      control 44 reserved_4
+      data 64 read_resp_data(dep=cpi_out.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 5 ##
+      subpacket flit_header flit_header_rsp48_5
+      control 44 reserved_5
+      data 64 read_resp_data(dep=cpi_out.ReadRequest48.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse56
+      subpacket response_header response_header56
+      data 64 read_resp_data(dep=cpi_out.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp56_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_out.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp56_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_out.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp56_3
+      control 44 reserved_3
+      data 64 read_resp_data(dep=cpi_out.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_rsp56_4
+      control 44 reserved_4
+      data 64 read_resp_data(dep=cpi_out.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 5 ##
+      subpacket flit_header flit_header_rsp56_5
+      control 44 reserved_5
+      data 64 read_resp_data(dep=cpi_out.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 6 ##
+      subpacket flit_header flit_header_rsp56_6
+      control 44 reserved_6
+      data 64 read_resp_data(dep=cpi_out.ReadRequest56.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(4)) : ReadResponse64
+      subpacket response_header response_header64
+      data 64 read_resp_data(dep=cpi_out.ReadRequest64.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp64_1
+      control 12 reserved_1
+      data 96 read_resp_data(dep=cpi_out.ReadRequest64.read_address(0), range = 96)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp64_2
+      control 12 reserved_2
+      data 96 read_resp_data(dep=cpi_out.ReadRequest64.read_address(0), range = 96)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp64_3
+      control 12 reserved_3
+      data 96 read_resp_data(dep=cpi_out.ReadRequest64.read_address(0), range = 96)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp64_4
+      control 12 reserved_4
+      data 96 read_resp_data(dep=cpi_out.ReadRequest64.read_address(0), range = 96)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_rsp64_5
+      control 44 reserved_5
+      data 64 read_resp_data(dep=cpi_out.ReadRequest64.read_address(0), range = 64)
+
+    ### WRITE REQUEST ### 
+
+    | + @(packet_header0.CMD(4)) : Write8
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 8)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write8
+      control 4 RSV_1
+      control 8 write_mask_1
+      control 32 reserved_1
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(5)) : Write16
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 16)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write16_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      control 32 reserved_1
+      data 64 write_data(range = 64)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write16_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      control 32 reserved_2
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(5)) : Write24
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 24)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write24_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write24_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+    | + @(packet_header0.CMD(5)) : Write32
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 32)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write32_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write32_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ## 
+      subpacket flit_header flit_header_write32_3
+      control 4 RSV_3
+      control 8 write_mask_3
+      control 32 reserved_3
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(5)) : Write40
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 40)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write40_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write40_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ## 
+      subpacket flit_header flit_header_write40_3
+      control 4 RSV_3
+      control 8 write_mask_3
+      control 32 reserved_3
+      data 64 write_data(range = 64)
+
+      ## flit 4 ## 
+      subpacket flit_header flit_header_write40_4
+      control 4 RSV_4
+      control 8 write_mask_4
+      control 32 reserved_4
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(5)) : Write48
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 48)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write48_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write48_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ## 
+      subpacket flit_header flit_header_write48_3
+      control 4 RSV_3
+      control 8 write_mask_3
+      data 96 write_data(range = 96)
+
+      ## flit 4 ## 
+      subpacket flit_header flit_header_write48_4
+      control 4 RSV_4
+      control 8 write_mask_4
+      data 96 write_data(range = 96)
+
+    | + @(packet_header0.CMD(5)) : Write56
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 56)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write56_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write56_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ## 
+      subpacket flit_header flit_header_write56_3
+      control 4 RSV_3
+      control 8 write_mask_3
+      data 96 write_data(range = 96)
+
+      ## flit 4 ## 
+      subpacket flit_header flit_header_write56_4
+      control 4 RSV_4
+      control 8 write_mask_4
+      data 96 write_data(range = 96)
+
+      ## flit 5 ## 
+      subpacket flit_header flit_header_write56_5
+      control 4 RSV_5
+      control 8 write_mask_5
+      control 32 reserved_5
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(6)) : Write64
+      ## flit 0 ## 
+      subpacket request_header request_header0
+      data 45 write_address(offset = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write64_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      control 32 reserved_1
+      data 64 write_data(range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_write64_2
+      control 12 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_write64_3
+      control 12 write_mask_3
+      data 96 write_data(range = 96)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_write64_4
+      control 12 write_mask_4
+      data 96 write_data(range = 96)
+
+      ## flit 5 ##
+      subpacket flit_header flit_header_write64_5
+      control 12 write_mask_5
+      data 96 write_data(range = 96)
+
+      ## flit 6 ##
+      subpacket flit_header flit_header_write64_6
+      control 4 RSV_2
+      control 8 write_mask_6
+      control 32 reserved_2
+      data 64 write_data(range = 64)
+
+    end
+  end
+
+  packet cpi_out begin
+    subpacket flit_header flit_header0
+    control 4 RSV 
+    subpacket packet_header packet_header0 
+
+    begin
+
+    ### READ REQUEST ### 
+
+    | + @(packet_header0.CMD(0)) : ReadRequest8
+      subpacket request_header request_header8
+      data 45 read_address(id=0, offset = 8)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest16
+      subpacket request_header request_header16
+      data 45 read_address(id=0, offset = 16)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest24
+      subpacket request_header request_header24
+      data 45 read_address(id=0, offset = 24)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest32
+      subpacket request_header request_header32
+      data 45 read_address(id=0, offset = 32)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest40
+      subpacket request_header request_header40
+      data 45 read_address(id=0, offset = 40)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest48
+      subpacket request_header request_header48
+      data 45 read_address(id=0, offset = 48)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest56
+      subpacket request_header request_header56
+      data 45 read_address(id=0, offset = 56)
+
+    | + @(packet_header0.CMD(1)) : ReadRequest64
+      subpacket request_header request_header64
+      data 45 read_address(id=0, offset = 64)
+
+    ### READ RESPONSE ###
+
+    | + @(packet_header0.CMD(1)) : ReadResponse8
+      subpacket response_header response_header8
+      data 64 read_resp_data(dep=cpi_in.ReadRequest8.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse16
+      subpacket response_header response_header16
+      data 64 read_resp_data(dep=cpi_in.ReadRequest16.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp16
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_in.ReadRequest16.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse24
+      subpacket response_header response_header24
+      data 64 read_resp_data(dep=cpi_in.ReadRequest24.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp24_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_in.ReadRequest24.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp24_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_in.ReadRequest24.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse32
+      subpacket response_header response_header32
+      data 64 read_resp_data(dep=cpi_in.ReadRequest32.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp32_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_in.ReadRequest32.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp32_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_in.ReadRequest32.read_address(0), range = 64)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp32_3
+      control 44 reserved_3
+      data 64 read_resp_data(dep=cpi_in.ReadRequest32.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse40
+      subpacket response_header response_header40
+      data 64 read_resp_data(dep=cpi_in.ReadRequest40.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp40_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_in.ReadRequest40.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp40_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_in.ReadRequest40.read_address(0), range = 64)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp40_3
+      control 44 reserved_3
+      data 64 read_resp_data(dep=cpi_in.ReadRequest40.read_address(0), range = 64)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_rsp40_4
+      control 44 reserved_4
+      data 64 read_resp_data(dep=cpi_in.ReadRequest40.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse48
+      subpacket response_header response_header48
+      data 64 read_resp_data(dep=cpi_in.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp48_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_in.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp48_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_in.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp48_3
+      control 44 reserved_3
+      data 64 read_resp_data(dep=cpi_in.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_rsp48_4
+      control 44 reserved_4
+      data 64 read_resp_data(dep=cpi_in.ReadRequest48.read_address(0), range = 64)
+
+      ## flit 5 ##
+      subpacket flit_header flit_header_rsp48_5
+      control 44 reserved_5
+      data 64 read_resp_data(dep=cpi_in.ReadRequest48.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(2)) : ReadResponse56
+      subpacket response_header response_header56
+      data 64 read_resp_data(dep=cpi_in.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp56_1
+      control 44 reserved_1
+      data 64 read_resp_data(dep=cpi_in.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp56_2
+      control 44 reserved_2
+      data 64 read_resp_data(dep=cpi_in.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp56_3
+      control 44 reserved_3
+      data 64 read_resp_data(dep=cpi_in.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_rsp56_4
+      control 44 reserved_4
+      data 64 read_resp_data(dep=cpi_in.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 5 ##
+      subpacket flit_header flit_header_rsp56_5
+      control 44 reserved_5
+      data 64 read_resp_data(dep=cpi_in.ReadRequest56.read_address(0), range = 64)
+
+      ## flit 6 ##
+      subpacket flit_header flit_header_rsp56_6
+      control 44 reserved_6
+      data 64 read_resp_data(dep=cpi_in.ReadRequest56.read_address(0), range = 64)
+
+    | + @(packet_header0.CMD(4)) : ReadResponse64
+      subpacket response_header response_header64
+      data 64 read_resp_data(dep=cpi_in.ReadRequest64.read_address(0), range = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_rsp64_1
+      control 12 reserved_1
+      data 96 read_resp_data(dep=cpi_in.ReadRequest64.read_address(0), range = 96)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_rsp64_2
+      control 12 reserved_2
+      data 96 read_resp_data(dep=cpi_in.ReadRequest64.read_address(0), range = 96)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp64_3
+      control 12 reserved_3
+      data 96 read_resp_data(dep=cpi_in.ReadRequest64.read_address(0), range = 96)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_rsp64_4
+      control 12 reserved_4
+      data 96 read_resp_data(dep=cpi_in.ReadRequest64.read_address(0), range = 96)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_rsp64_5
+      control 44 reserved_5
+      data 64 read_resp_data(dep=cpi_in.ReadRequest64.read_address(0), range = 64)
+
+    ### WRITE REQUEST ### 
+
+    | + @(packet_header0.CMD(4)) : Write8
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 8)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write8
+      control 4 RSV_1
+      control 8 write_mask_1
+      control 32 reserved_1
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(5)) : Write16
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 16)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write16_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      control 32 reserved_1
+      data 64 write_data(range = 64)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write16_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      control 32 reserved_2
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(5)) : Write24
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 24)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write24_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write24_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+    | + @(packet_header0.CMD(5)) : Write32
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 32)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write32_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write32_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ## 
+      subpacket flit_header flit_header_write32_3
+      control 4 RSV_3
+      control 8 write_mask_3
+      control 32 reserved_3
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(5)) : Write40
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 40)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write40_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write40_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ## 
+      subpacket flit_header flit_header_write40_3
+      control 4 RSV_3
+      control 8 write_mask_3
+      control 32 reserved_3
+      data 64 write_data(range = 64)
+
+      ## flit 4 ## 
+      subpacket flit_header flit_header_write40_4
+      control 4 RSV_4
+      control 8 write_mask_4
+      control 32 reserved_4
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(5)) : Write48
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 48)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write48_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write48_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ## 
+      subpacket flit_header flit_header_write48_3
+      control 4 RSV_3
+      control 8 write_mask_3
+      data 96 write_data(range = 96)
+
+      ## flit 4 ## 
+      subpacket flit_header flit_header_write48_4
+      control 4 RSV_4
+      control 8 write_mask_4
+      data 96 write_data(range = 96)
+
+    | + @(packet_header0.CMD(5)) : Write56
+      ## flit 0 ##
+      subpacket request_header request_header0
+      data 45 write_address(offset = 56)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write56_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      data 96 write_data(range = 96)
+
+      ## flit 2 ## 
+      subpacket flit_header flit_header_write56_2
+      control 4 RSV_2
+      control 8 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ## 
+      subpacket flit_header flit_header_write56_3
+      control 4 RSV_3
+      control 8 write_mask_3
+      data 96 write_data(range = 96)
+
+      ## flit 4 ## 
+      subpacket flit_header flit_header_write56_4
+      control 4 RSV_4
+      control 8 write_mask_4
+      data 96 write_data(range = 96)
+
+      ## flit 5 ## 
+      subpacket flit_header flit_header_write56_5
+      control 4 RSV_5
+      control 8 write_mask_5
+      control 32 reserved_5
+      data 64 write_data(range = 64)
+
+    | + @(packet_header0.CMD(6)) : Write64
+      ## flit 0 ## 
+      subpacket request_header request_header0
+      data 45 write_address(offset = 64)
+
+      ## flit 1 ##
+      subpacket flit_header flit_header_write64_1
+      control 4 RSV_1
+      control 8 write_mask_1
+      control 32 reserved_1
+      data 64 write_data(range = 64)
+
+      ## flit 2 ##
+      subpacket flit_header flit_header_write64_2
+      control 12 write_mask_2
+      data 96 write_data(range = 96)
+
+      ## flit 3 ##
+      subpacket flit_header flit_header_write64_3
+      control 12 write_mask_3
+      data 96 write_data(range = 96)
+
+      ## flit 4 ##
+      subpacket flit_header flit_header_write64_4
+      control 12 write_mask_4
+      data 96 write_data(range = 96)
+
+      ## flit 5 ##
+      subpacket flit_header flit_header_write64_5
+      control 12 write_mask_5
+      data 96 write_data(range = 96)
+
+      ## flit 6 ##
+      subpacket flit_header flit_header_write64_6
+      control 4 RSV_2
+      control 8 write_mask_6
+      control 32 reserved_2
+      data 64 write_data(range = 64)
+    end
+  end
+
+endprotocol
+
+

@@ -1,0 +1,9 @@
+
+./in/axi_master/axi_master_w64  axi
+./in/cpi40                    cpi
+
+axi out awaddr          cpi in  cpi_out.write_address
+axi out wdata           cpi in  cpi_out.write_data       
+
+axi out araddr          cpi in  cpi_out.read_address     
+axi in  rdata           cpi out cpi_in.read_resp_data   

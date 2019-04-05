@@ -1,0 +1,87 @@
+protocol axi64
+
+  ports
+    # read addr
+    data    in 32 araddr
+    control in 4  arlen
+    control in 3  arsize
+    control in 3  arburst # implement me
+    control in 1  arvalid
+    control out 1 arready
+
+    # read data
+    data    out 64 rdata
+    control out 2  rresp # implement me
+    control out 1  rlast # implement me
+    control out 1  rvalid
+    control in  1  rready
+
+    # write addr
+    data    in 32 awaddr
+    control in 4  awlen
+    control in 3  awsize
+    control in 2  awburst # implement me
+    control in 1  awvalid
+    control out  1  awready
+
+    # write data
+    data    in  64 wdata
+    control in 1  wlast # implement me
+    control in 1  wvalid
+    control out  1  wready
+
+    # write resp
+    control out 2  bresp
+    control out 1  bvalid
+    control in  1  bready
+  endports
+
+  map arsize begin
+    0 : 8
+    1 : 16
+    2 : 32
+    3 : 64
+    4 : 128
+    5 : 256
+    6 : 512
+    7 : 1024
+  end
+
+  map awsize begin
+    0 : 8
+    1 : 16
+    2 : 32
+    3 : 64
+    4 : 128
+    5 : 256
+    6 : 512
+    7 : 1024
+  end
+
+  behavior
+    generate itr = awlen : 0 begin
+    + @(awvalid(1), awready(1)) { rec( awaddr(offset=8, id=itr) ) }
+    end
+  endbehavior
+
+  behavior
+    generate itr = awlen : 0 begin
+    + @(wvalid(1), wready(1)) { rec( wdata(range=64, id=itr, dep=awaddr(itr)) ) }
+    end
+  endbehavior
+
+  behavior
+    generate itr = arlen : 0 begin
+    + @(arvalid(1), arready(1)) { rec( araddr(offset=8, id=itr) ) }
+    end
+  endbehavior
+
+  behavior
+    generate itr = arlen : 0 begin
+    + @(rvalid(1), rready(1)) { send( rdata(range=64, id=itr, dep=araddr(itr)) ) }
+    end 
+  endbehavior
+
+endprotocol
+
+

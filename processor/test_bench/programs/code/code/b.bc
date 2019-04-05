@@ -1,0 +1,14 @@
+
+def f(x):
+  if x == 10:
+    g(x)
+  else:
+    0
+
+def g(x):
+  if x == 10:
+    30
+  else:
+    0
+
+f(10)

@@ -1,0 +1,9 @@
+
+./in/axi_master/axi_master_w64  axi
+./in/ahb_slave/ahb_slave_w64    ahb
+
+axi out awaddr          ahb in  haddr 
+axi out wdata           ahb in  hwdata
+
+axi out araddr          ahb in  haddr  
+axi in  rdata           ahb out hrdata 
